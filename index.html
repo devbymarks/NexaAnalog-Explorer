@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071321">
+  <title>NexaAnalog Explorer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="NexaAnalog Explorer, início">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span><strong>NEXAANALOG</strong><small>EXPLORER · NEXAÓRBITA</small></span>
+    </a>
+    <div class="top-meta"><span class="status-dot"></span><span>ANÁLISE LOCAL</span><span class="divider">/</span><span>SEM ENVIO DE DADOS</span></div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span>01</span> EXPLORADOR DE TERRENOS</div>
+        <h1>Compare terrenos.<br><em>Entenda as diferenças.</em></h1>
+        <p>Uma triagem topográfica explicável entre uma região planetária de referência e recortes terrestres. Cada resultado mantém os dados, a escala e os parâmetros à vista.</p>
+        <div class="hero-note"><span class="note-icon">!</span><span>Resultados topográficos preliminares. Não demonstram equivalência geológica nem segurança operacional.</span></div>
+      </div>
+      <div class="hero-orbit" aria-hidden="true">
+        <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+        <div class="planet planet-mars"><span></span></div><div class="planet planet-earth"><span></span></div>
+        <div class="orbit-label label-mars">MARS / DEM</div><div class="orbit-label label-earth">EARTH / DEM</div>
+        <div class="orbit-center">N<span>↔</span>E</div>
+      </div>
+    </section>
+
+    <nav class="journey" aria-label="Etapas da comparação">
+      <ol>
+        <li id="journey-data" data-state="active" aria-current="step"><span>1</span><div><strong>Dados</strong><small>Escolha os recortes</small></div></li>
+        <li id="journey-metrics" data-state="upcoming"><span>2</span><div><strong>Comparação</strong><small>Calcule as métricas</small></div></li>
+        <li id="journey-explain" data-state="upcoming"><span>3</span><div><strong>Interpretação</strong><small>Revise e exporte</small></div></li>
+      </ol>
+    </nav>
+
+    <section class="workspace" aria-labelledby="setup-title">
+      <div class="section-heading">
+        <div><div class="eyebrow"><span>02</span> CONFIGURE A COMPARAÇÃO</div><h2 id="setup-title">Seus dados, sua análise</h2></div>
+          <button class="text-button" id="demo-button" type="button">Carregar exemplo sintético <span>↗</span></button>
+      </div>
+
+      <div class="privacy-banner" id="demo-banner" hidden><strong>EXEMPLO SINTÉTICO</strong><span>Os terrenos abaixo são gerados por fórmulas para demonstrar a interface. Não são medições nem locais reais.</span></div>
+      <div class="privacy-banner warning-banner" id="input-error" hidden role="alert"></div>
+
+      <div class="data-grid">
+        <article class="data-card reference-card">
+          <div class="card-head"><span class="card-index">A</span><div><div class="card-kicker">REFERÊNCIA PLANETÁRIA</div><h3>Terreno-alvo</h3></div><span class="planet-tag">MARTE</span></div>
+          <label class="field-label" for="reference-name">Nome da região</label>
+          <input id="reference-name" class="text-input" value="Referência marciana" autocomplete="off">
+          <label class="upload-zone" for="reference-file"><input id="reference-file" type="file" accept=".asc,.txt,.csv"><span class="upload-icon">↑</span><strong id="reference-file-label">Selecionar grade de elevação</strong><small>ESRI ASCII Grid (.asc) ou matriz CSV (.csv)</small></label>
+          <div class="file-status" id="reference-status"><span class="status-ring"></span>Aguardando arquivo</div>
+          <div class="metadata-grid">
+            <div><span>FONTE / PRODUTO</span><input id="reference-source" class="meta-input" placeholder="Ex.: PDS MOLA MEGDR v2.0"></div>
+            <div><span>RESOLUÇÃO (m/célula)</span><input id="reference-resolution" class="meta-input" type="number" min="0.001" step="any" placeholder="Ex.: 463"></div>
+          </div>
+        </article>
+
+        <article class="data-card earth-card">
+          <div class="card-head"><span class="card-index">B</span><div><div class="card-kicker">REGIÕES CANDIDATAS</div><h3>Terrenos terrestres</h3></div><button class="add-button" id="add-candidate" type="button" aria-label="Adicionar candidato">+</button></div>
+          <div id="candidates" class="candidate-list"></div>
+          <div class="card-footnote">Use grades já recortadas, reprojetadas e alinhadas na mesma escala. A ferramenta não reprojeta nem reamostra arquivos.</div>
+        </article>
+      </div>
+
+      <div class="method-bar">
+        <label class="confirm-check"><input type="checkbox" id="projected-confirm"><span class="fake-check"></span><span>Confirmo que as grades têm projeção métrica local, recortes da mesma dimensão física e resolução compatível.</span></label>
+        <div class="resolution-control"><label for="cell-size">Célula comum</label><input id="cell-size" type="number" min="0.001" step="any" placeholder="m"><span>metros</span></div>
+      </div>
+
+      <div class="action-row">
+        <div class="method-caption"><span class="blue-pip"></span> DECLIVIDADE · RUGOSIDADE LOCAL · DISTÂNCIA ENTRE DISTRIBUIÇÕES</div>
+        <button class="primary-button" id="analyze-button" type="button" disabled>Executar comparação <span>→</span></button>
+      </div>
+      <p class="action-helper" id="readiness-message" aria-live="polite">Carregue os recortes e informe a procedência para começar.</p>
+    </section>
+
+    <section class="results" id="results" hidden aria-live="polite">
+      <div class="section-heading result-heading"><div><div class="eyebrow"><span>03</span> RESULTADOS CALCULADOS</div><h2>O que os dados mostram</h2></div><button class="secondary-button" id="export-button" type="button">Exportar CSV <span>↓</span></button></div>
+      <div class="result-callout" id="result-callout"></div>
+      <div class="results-grid">
+        <article class="panel chart-panel"><div class="panel-top"><div><div class="card-kicker">DISTRIBUIÇÃO COMPARADA</div><h3>Declividade</h3></div><span class="unit-chip">GRAUS</span></div><div id="slope-chart" class="chart-wrap"></div><div class="chart-legend" id="slope-legend"></div></article>
+        <article class="panel chart-panel"><div class="panel-top"><div><div class="card-kicker">DISTRIBUIÇÃO COMPARADA</div><h3>Rugosidade local</h3></div><span class="unit-chip">METROS</span></div><div id="rough-chart" class="chart-wrap"></div><div class="chart-legend" id="rough-legend"></div></article>
+      </div>
+      <article class="panel metrics-panel"><div class="panel-top"><div><div class="card-kicker">MÉTRICAS POR RECORTE</div><h3>Valores e diferenças</h3></div><span class="method-pill">PERCENTIS · MÉDIA · W₁</span></div><div class="table-scroll"><table id="metrics-table"></table></div></article>
+      <div class="results-grid lower-grid">
+        <article class="panel why-panel"><div class="panel-top"><div><div class="card-kicker">WHY THIS TERRAIN?</div><h3>Por que este terreno?</h3></div><span class="why-icon">↳</span></div><div id="why-content" class="why-content"></div></article>
+        <article class="panel sensitivity-panel"><div class="panel-top"><div><div class="card-kicker">ROBUSTEZ DA CLASSIFICAÇÃO</div><h3>Sensibilidade aos pesos</h3></div><span class="method-pill">EXPLORATÓRIA</span></div><div class="weight-control"><label for="slope-weight">Peso da declividade</label><input id="slope-weight" type="range" min="0" max="100" value="50"><output id="slope-weight-label">50%</output></div><div id="ranking-list" class="ranking-list"></div><div class="small-limit" id="sensitivity-note"></div></article>
+      </div>
+      <article class="limitations"><div class="limit-sign">i</div><div><strong>Limites desta análise</strong><p>Declividade e rugosidade descrevem apenas aspectos do relevo na escala informada. A comparação não avalia geologia, solo, gravidade, atmosfera, temperatura, radiação, tração, recursos ou segurança. Distribuições espaciais também não são observações independentes; não são calculados intervalos de confiança.</p></div></article>
+      <details class="repro-panel"><summary>Procedimento e proveniência <span>＋</span></summary><div id="repro-content"></div></details>
+    </section>
+
+    <footer><span> NEXAANALOG EXPLORER <i>·</i> NEXAÓRBITA</span><span>FERRAMENTA DE TRIAGEM · VERSÃO 0.1</span></footer>
+  </main>
+  <script src="analysis.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
