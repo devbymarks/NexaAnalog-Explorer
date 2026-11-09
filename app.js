@@ -3,7 +3,7 @@
   const A = window.NexaAnalysis;
   const $ = (s, p = document) => p.querySelector(s);
   const $$ = (s, p = document) => [...p.querySelectorAll(s)];
-  const COLORS = ['#42b8ff', '#65e2dc', '#ff9c63', '#c69bff', '#f17eaa', '#a8df75'];
+  const COLORS = ['var(--mars)', 'var(--earth)', 'var(--candidate-3)', 'var(--candidate-4)', 'var(--candidate-5)', 'var(--accent)'];
   let candidateSequence = 0;
   let analysisState = null;
 
@@ -120,15 +120,15 @@
     const lines = [];
     for (let i = 0; i <= 4; i++) {
       const y = mt + plotH * i / 4;
-      lines.push(`<line x1="${ml}" y1="${y}" x2="${width-mr}" y2="${y}" stroke="#e1e8e5" stroke-width="1"/>`);
-      lines.push(`<text x="${ml-7}" y="${y+3}" text-anchor="end" fill="#687b82" font-size="9" font-family="monospace">${(1-i/4).toFixed(2)}</text>`);
+      lines.push(`<line x1="${ml}" y1="${y}" x2="${width-mr}" y2="${y}" stroke="var(--grid-line)" stroke-width="1"/>`);
+      lines.push(`<text x="${ml-7}" y="${y+3}" text-anchor="end" fill="var(--muted)" font-size="9">${(1-i/4).toFixed(2)}</text>`);
     }
     const paths = series.map((s, idx) => {
       const hist = A.histogram(s.stats.values, bins), maxCount = Math.max(...hist.counts, 1);
       const pts = hist.counts.map((count, i) => `${ml + (i+.5)*plotW/bins},${mt + plotH - count/maxCount*plotH}`).join(' ');
       return `<polyline points="${pts}" fill="none" stroke="${COLORS[idx%COLORS.length]}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity=".92"/>`;
     }).join('');
-    const xlabels = `<text x="${ml}" y="${height-6}" fill="#687b82" font-size="9" font-family="monospace">${nfmt(min,1)}</text><text x="${width-mr}" y="${height-6}" text-anchor="end" fill="#687b82" font-size="9" font-family="monospace">${nfmt(max,1)}</text>`;
+    const xlabels = `<text x="${ml}" y="${height-6}" fill="var(--muted)" font-size="9">${nfmt(min,1)}</text><text x="${width-mr}" y="${height-6}" text-anchor="end" fill="var(--muted)" font-size="9">${nfmt(max,1)}</text>`;
     return `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(title)}. Histogramas normalizados dos recortes.">${lines.join('')}${paths}${xlabels}</svg>`;
   }
 
@@ -143,7 +143,7 @@
 
   function renderTable(series) {
     const ref = series[0];
-    const headers = ['RECORTE','JANELAS VÁLIDAS','COBERTURA ELEVAÇÃO','DECLIVIDADE MÉDIA','DECLIVIDADE P10–P90','RUGOSIDADE RESIDUAL MÉDIA','RUGOSIDADE P10–P90','W₁ DECLIVIDADE','W₁ RUGOSIDADE'];
+    const headers = ['Recorte','Janelas válidas','Cobertura de elevação','Declividade média','Declividade P10–P90','Rugosidade residual média','Rugosidade P10–P90','W₁ declividade','W₁ rugosidade'];
     const head = `<thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead>`;
     const body = series.map((s,i)=>`<tr><td>${esc(s.record.name)}${i===0?' · REF':''}</td><td>${s.metrics.slope.n.toLocaleString('pt-BR')}</td><td>${pfmt(s.metrics.validElevation/s.metrics.totalCells)}</td><td>${nfmt(s.metrics.slope.mean)}°</td><td>${nfmt(s.metrics.slope.p10)}° – ${nfmt(s.metrics.slope.p90)}°</td><td>${nfmt(s.metrics.roughness.mean)} m</td><td>${nfmt(s.metrics.roughness.p10)} – ${nfmt(s.metrics.roughness.p90)} m</td><td>${i===0?'—':`${nfmt(s.distance.slopeW1,3)}°`}</td><td>${i===0?'—':`${nfmt(s.distance.roughnessW1,3)} m`}</td></tr>`).join('');
     $('#metrics-table').innerHTML = `${head}<tbody>${body}</tbody>`;
@@ -245,4 +245,5 @@
   addCandidate('Candidato 3 · a selecionar','','');
   setJourney(1);
 })();
+
 

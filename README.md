@@ -6,6 +6,12 @@ Aplicação local, sem dependências externas, para comparar distribuições de 
 
 Abra `index.html` em um navegador moderno. O aplicativo roda no próprio navegador; os arquivos selecionados não são enviados a um servidor. Não é necessário instalar Python ou pacotes JavaScript.
 
+## Interface
+
+A interface usa uma identidade escura inspirada em instrumentos de campo: superfícies minerais, sinais em terracota para a referência marciana e verde-água para os recortes terrestres, com tokens compartilhados de cor, espaçamento e raio. Formulários, cartões de resultado, gráficos e tabelas usam a mesma hierarquia visual. O layout se reorganiza para telas menores, mantém a tabela em uma faixa rolável e oferece foco visível, controles com rótulos e respeito à preferência por movimento reduzido. A referência visual foi o método do Hallmark para preservar a identidade do produto, evitar padrões genéricos e priorizar contraste, consistência e uso real dos componentes.
+
+A ilustração de Marte e da Terra usa imagens geradas por IA apenas como elemento visual. Elas não são produtos científicos, mapas de dados ou representações em escala, e as órbitas não correspondem a trajetórias físicas.
+
 Use **Carregar exemplo sintético** para percorrer o fluxo e ver resultados gerados por fórmulas. O aviso de demonstração identifica esses números como sintéticos. Remova o aviso ou carregue dados reais somente depois de confirmar a origem e o processamento dos arquivos.
 
 ## Dados aceitos
@@ -56,4 +62,5 @@ Os testes exercitam parsing, NoData, declividade de um plano de inclinação con
 O protótipo foi escrito com assistência de IA antes do hackathon. A página pública de 2026 incentiva revisão dos desafios e exploração dos dados antes do evento, mas a pesquisa realizada até 29 de outubro de 2026 não encontrou uma regra pública específica que confirme ou proíba código prévio ou ferramentas generativas. Verifique essas condições com a organização e siga as instruções oficiais que forem publicadas. O registro do uso de IA também está em `docs/AI_USAGE.md`.
 
 Fontes oficiais verificadas para o planejamento: [desafio 2026](https://www.spaceappschallenge.org/2026/challenges/permanent-moon-base-locations-and-mars/), [termos de participação](https://www.spaceappschallenge.org/legal/), [arquivo MOLA](https://pds-geosciences.wustl.edu/missions/mgs/megdr.html), [NASADEM](https://data.nasa.gov/dataset/nasadem-merged-dem-global-1-arc-second-v001).
+
 
